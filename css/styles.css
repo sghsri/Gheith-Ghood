@@ -22,5 +22,6 @@ tr:hover {
 }
 
 .hovered{
-    background-color: orange;
+    background-color: #03A9F4;
+    color:white;
 }
