@@ -11,6 +11,7 @@ if (window.location.href.includes('cs439')) {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').each(function() {
             var color = $(this).css('background-color');
+            $(this).css('padding', '0px 4px 0px 4px');
             var index = $(this).index();
             var test = $('tr:eq(0)').find(`td:eq(${index})`).text();
             var status = '';
@@ -21,7 +22,7 @@ if (window.location.href.includes('cs439')) {
             }
             $(this).addClass(status);
             if (status == 'fail') {
-                $(this).parent().find('#more').append(`<p style="font-size:small;margin-bottom:0px;">${status}: ${test}</p>`);
+                $(this).parent().find('#more').append(`<p style="font-size:small;margin:0px;padding:0px;">${status}: ${test}</p>`);
             }
             $(this).css('background-color', '');
         });
