@@ -7,6 +7,20 @@ tr{
 tr:hover {
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
 }
-table {
-    
+
+.fail {
+    background-color: #FF5252;
+}
+
+.success {
+    background-color: #388E3C;
+}
+
+
+.hidden{
+    display:none;
+}
+
+.hovered{
+    background-color: orange;
 }
