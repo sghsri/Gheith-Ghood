@@ -1,5 +1,6 @@
 if (window.location.href.includes('cs439')) {
     var rows = $('tr:gt(0)');
+    $('table').after('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
     $('td:eq(0)').html('<p>commit id<input id="search" style="margin-left:20px;width:70%;"></input></p>')
     $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('td:eq(2)').append('<span> ▶ </span>');
@@ -7,13 +8,21 @@ if (window.location.href.includes('cs439')) {
     $('td:lt(3)').css('padding', '10px');
     $('table').find('tr').each(function() {
         $(this).find('td').css('font-size', '15px');
-        $(this).find('td').each(function() {
-            var color = $(this).css('background-color')
+        $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
+        $(this).find('td:gt(2)').each(function() {
+            var color = $(this).css('background-color');
+            var index = $(this).index();
+            var test = $('tr:eq(0)').find(`td:eq(${index})`).text();
             console.log(color);
+            var status = '';
             if (color == 'rgb(255, 0, 0)') {
-                $(this).addClass('fail');
+                status = 'fail';
             } else if (color == 'rgb(0, 128, 0)') {
-                $(this).addClass('success');
+                status = 'success';
+            }
+            $(this).addClass(status);
+            if (status == 'fail') {
+                $(this).parent().find('#more').append(`<p style="font-size:small;margin-bottom:0px;">${status}: ${test}</p>`);
             }
             $(this).css('background-color', '');
         });
@@ -34,6 +43,10 @@ if (window.location.href.includes('cs439')) {
             }
         }
     })
+    $('tr:gt(0)').on('click', 'td:lt(3)', function() {
+        $(this).parent().find("#more").toggleClass('hidden');
+        $(this).parent().find("td:gt(2)").toggleClass('selected');
+    });
     $('table').on('mouseout', 'td', function() {
         $('td').removeClass('hovered');
     })
@@ -47,6 +60,11 @@ if (window.location.href.includes('cs439')) {
                 $(this).removeClass('hidden');
             }
         });
+        if ($('tr:visible').length == 1) {
+            $("#empty").removeClass('hidden');
+        } else {
+            $("#empty").addClass('hidden');
+        }
 
     });
 

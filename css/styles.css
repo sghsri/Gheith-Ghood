@@ -9,6 +9,10 @@ tr:hover {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+td {
+  vertical-align: top;
+}
+
 .fail {
   background-color: #FF5252;
 }
@@ -21,7 +25,11 @@ tr:hover {
   display: none;
 }
 
+.selected {
+  filter: brightness(125%);
+}
+
 .hovered {
-  background-color: #03A9F4;
+  background-color: #ffb74d;
   color: white;
 }
