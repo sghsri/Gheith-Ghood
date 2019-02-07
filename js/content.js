@@ -1,19 +1,15 @@
 if (window.location.href.includes('cs439')) {
     var rows = $('tr:gt(0)');
-    $('table').after('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
+    $('body').append('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
     $('td:eq(0)').html('<p>commit id<input id="search" style="margin-left:20px;width:70%;"></input></p>')
     $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('td:eq(2)').append('<span> ▶ </span>');
     $('tr:gt(0)').find('td:lt(3)').css('text-align', 'center');
     $('td:lt(3)').css('padding', '10px');
     $('table').find('tr').each(function() {
-        $(this).find('td').css('font-size', '15px');
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').each(function() {
             var color = $(this).css('background-color');
-            $(this).css('padding', '0px 4px 0px 4px');
-            var index = $(this).index();
-            var test = $('tr:eq(0)').find(`td:eq(${index})`).text();
             var status = '';
             if (color == 'rgb(255, 0, 0)') {
                 status = 'fail';
@@ -21,6 +17,8 @@ if (window.location.href.includes('cs439')) {
                 status = 'success';
             }
             $(this).addClass(status);
+            var index = $(this).index();
+            var test = $('tr:eq(0)').find(`td:eq(${index})`).text();
             if (status == 'fail') {
                 $(this).parent().find('#more').append(`<p style="font-size:small;margin:0px;padding:0px;">${status}: ${test}</p>`);
             }

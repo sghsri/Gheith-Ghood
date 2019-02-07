@@ -11,6 +11,11 @@ tr:hover {
 
 td {
   vertical-align: top;
+  font-size: 15px;
+}
+
+td:nth-of-type(n+2) {
+  padding: 0px 4px 0px 4px;
 }
 
 .fail {
