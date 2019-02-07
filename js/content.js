@@ -1,11 +1,21 @@
 if (window.location.href.includes('cs439')) {
+    $('td:lt(3)').css('padding', '10px');
+    $('td:eq(2)').append('<span> ▶ </span>');
     var rows = $('tr:gt(0)');
     $('body').append('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
     $('td:eq(0)').html('<p>commit id<input id="search" style="margin-left:20px;width:70%;"></input></p>')
-    $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
-    $('td:eq(2)').append('<span> ▶ </span>');
+    var modhtml = `<div class=modal id=myModal>
+							<div class=modal-content>
+							   <span class=close>×</span>
+                               <div style="display:flex;">
+							   <iframe style="width:70%; height:60%;" id="problem"></iframe>
+                               <iframe style="width:30%;"id="solution"></iframe>
+                               </div>
+							</div>
+	              </div>`;
+    $("body").prepend(modhtml);
+    // $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('tr:gt(0)').find('td:lt(3)').css('text-align', 'center');
-    $('td:lt(3)').css('padding', '10px');
     $('table').find('tr').each(function() {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').each(function() {
@@ -45,12 +55,14 @@ if (window.location.href.includes('cs439')) {
         $(this).parent().find("#more").toggleClass('hidden');
         $(this).parent().find("td:gt(2)").toggleClass('selected');
     });
+    $('tr:gt(0)').on('click', 'td:gt(2)', function() {
+        getTestInfo($(this).index());
+    })
     $('table').on('mouseout', 'td', function() {
         $('td').removeClass('hovered');
     })
     $("#search").on('input', function() {
         var val = $(this).val();
-        console.log(val);
         $('tr:gt(0)').each(function() {
             if (!($(this).find('td:eq(0)').text().startsWith(val))) {
                 $(this).addClass('hidden');
@@ -63,8 +75,16 @@ if (window.location.href.includes('cs439')) {
         } else {
             $("#empty").addClass('hidden');
         }
-
     });
+
+    function getTestInfo(index) {
+        let td = $(`td:eq(${index})`);
+        let test = $(td).find('a:eq(0)').attr('href');
+        let out = $(td).find('a:eq(1)').attr('href');
+        $("#myModal").fadeIn(150);
+        $("#problem").attr('src', test);
+        $("#solution").attr('src', out);
+    }
 
     function sortList() {
         var sortedRows = rows.slice();
@@ -78,6 +98,9 @@ if (window.location.href.includes('cs439')) {
             $('table').append($(this));
         });
     }
+    $('.close').click(function() {
+        $("#myModal").fadeOut(150);
+    });
 
     function resetList() {
         $('table>tr').remove();
@@ -103,7 +126,6 @@ if (window.location.href.includes('cs439')) {
         let numMoods = 0;
         $('tr:gt(0)').each(function() {
             var mood = $(this).find('td:eq(1)').css('color');
-            console.log(mood);
             switch (mood) {
                 case "rgb(255, 0, 0)":
                     redAvg += 255;
