@@ -1,5 +1,6 @@
 if (window.location.href.includes('cs439')) {
     var rows = $('tr:gt(0)');
+    $('td:eq(0)').html('<p>commit id<input id="search" style="margin-left:20px;width:70%;"></input></p>')
     $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('td:eq(2)').append('<span> ▶ </span>');
     $('tr:gt(0)').find('td:lt(3)').css('text-align', 'center');
@@ -36,6 +37,18 @@ if (window.location.href.includes('cs439')) {
     $('table').on('mouseout', 'td', function() {
         $('td').removeClass('hovered');
     })
+    $("#search").on('input', function() {
+        var val = $(this).val();
+        console.log(val);
+        $('tr:gt(0)').each(function() {
+            if (!($(this).find('td:eq(0)').text().startsWith(val))) {
+                $(this).addClass('hidden');
+            } else {
+                $(this).removeClass('hidden');
+            }
+        });
+
+    });
 
     function sortList() {
         var sortedRows = rows.slice();

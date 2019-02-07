@@ -1,27 +1,27 @@
-tr{
-    margin: 10px 0px 10px 0px;
-    line-height:25px;
-    transition: 0.3s;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+tr {
+  margin: 10px 0px 10px 0px;
+  line-height: 25px;
+  transition: 0.3s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
+
 tr:hover {
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .fail {
-    background-color: #FF5252;
+  background-color: #FF5252;
 }
 
 .success {
-    background-color: #388E3C;
+  background-color: #388E3C;
 }
 
-
-.hidden{
-    display:none;
+.hidden {
+  display: none;
 }
 
-.hovered{
-    background-color: #03A9F4;
-    color:white;
+.hovered {
+  background-color: #03A9F4;
+  color: white;
 }
