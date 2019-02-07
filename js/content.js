@@ -35,6 +35,9 @@ if (window.location.href.includes('cs439')) {
             $(this).css('background-color', '');
         });
     });
+    $('.modal').click(function() {
+        $(this).fadeOut(150);
+    });
     $('table').on('mouseover', 'td', function() {
         var index = $(this).index();
         if (index > 2) {
