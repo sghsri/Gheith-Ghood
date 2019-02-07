@@ -13,7 +13,6 @@ if (window.location.href.includes('cs439')) {
             var color = $(this).css('background-color');
             var index = $(this).index();
             var test = $('tr:eq(0)').find(`td:eq(${index})`).text();
-            console.log(color);
             var status = '';
             if (color == 'rgb(255, 0, 0)') {
                 status = 'fail';
@@ -71,7 +70,6 @@ if (window.location.href.includes('cs439')) {
     function sortList() {
         var sortedRows = rows.slice();
         sortedRows.sort(function(a, b) {
-            console.log(a);
             var passA = $(a).find('td:eq(2)').text();
             var passB = $(b).find('td:eq(2)').text();
             return parseInt(passB) - parseInt(passA);
@@ -97,5 +95,37 @@ if (window.location.href.includes('cs439')) {
             resetList();
         }
     });
+    averageMood();
+
+    function averageMood() {
+        let redAvg = 0;
+        let greenAvg = 0;
+        let blueAvg = 0;
+        let numMoods = 0;
+        $('tr:gt(0)').each(function() {
+            var mood = $(this).find('td:eq(1)').css('color');
+            console.log(mood);
+            switch (mood) {
+                case "rgb(255, 0, 0)":
+                    redAvg += 255;
+                    break;
+                case "rgb(0, 128, 0)":
+                    greenAvg += 255;
+                    break;
+                case "rgb(0, 0, 255)":
+                    blueAvg += 255;
+                    break;
+                default:
+                    numMoods++;
+                    break;
+            }
+        });
+        redAvg /= numMoods;
+        greenAvg /= numMoods;
+        blueAvg /= numMoods;
+        $('td:eq(1)').css('color', `rgb(${redAvg}, ${greenAvg}, ${blueAvg})`);
+
+
+    }
 
 }
