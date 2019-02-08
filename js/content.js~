@@ -3,7 +3,7 @@ if (window.location.href.includes('cs439')) {
     $('td:eq(2)').append('<span> ▶ </span>');
     var rows = $('tr:gt(0)');
     $('body').append('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
-    $('td:eq(0)').html('<p>commit id<input id="search" defaultValue="' +localStorage.getItem("commitID") + '" style="margin-left:20px;width:70%;"></input></p>')
+    $('td:eq(0)').html('<p>commit id<input id="search" value="' +localStorage.getItem("commitID") + '" style="margin-left:20px;width:70%;"></input></p>')
     var modhtml = `<div class=modal id=myModal>
 							<div class=modal-content>
 							   <span class=close>×</span>
@@ -16,6 +16,7 @@ if (window.location.href.includes('cs439')) {
     $("body").prepend(modhtml);
     // $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('tr:gt(0)').find('td:lt(3)').css('text-align', 'center');
+    $('tr:gt(0)').find('td:lt(3)').addClass('commitID');
     $('table').find('tr').each(function() {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').each(function() {
@@ -66,8 +67,13 @@ if (window.location.href.includes('cs439')) {
     })
     $("#search").on('input', function(e) {
         var val = $(this).val();
-        $('tr:gt(0)').each(function() {
-            if (!($(this).find('td:eq(0)').text().startsWith(val))) {
+        filterList(val)
+		storeCommitID(e.target.value);    
+    });
+
+    function filterList(id) {
+    	$('tr:gt(0)').each(function() {
+            if (!($(this).find('td:eq(0)').text().startsWith(id))) {
                 $(this).addClass('hidden');
             } else {
                 $(this).removeClass('hidden');
@@ -78,8 +84,7 @@ if (window.location.href.includes('cs439')) {
         } else {
             $("#empty").addClass('hidden');
         }
-	storeCommitID(e.target.value);    
-    });
+    }
     
     function getTestInfo(index) {
         let td = $(`td:eq(${index})`);
@@ -154,8 +159,9 @@ if (window.location.href.includes('cs439')) {
     }
 
     function storeCommitID(id) {
-	window.localStorage.setItem('commitID', id);
-	console.log("updated local id to " + id);
+		window.localStorage.setItem('commitID', id);
     }
 
+    // This filters the list once when we load the site
+    filterList(localStorage.getItem('commitID'));
 }

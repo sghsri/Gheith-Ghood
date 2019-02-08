@@ -1,6 +1,7 @@
 if (window.location.href.includes('cs439')) {
     $('td:lt(3)').css('padding', '10px');
     $('td:eq(2)').append('<span> ▶ </span>');
+    $('td:eq(2)').css('cursor', 'pointer');
     var rows = $('tr:gt(0)');
     $('body').append('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
     $('td:eq(0)').html('<p>commit id<input id="search" value="' +localStorage.getItem("commitID") + '" style="margin-left:20px;width:70%;"></input></p>')
