@@ -67,12 +67,19 @@ td:nth-of-type(n+2) {
 }
 
 .selected {
-  filter: brightness(125%);
+  filter: brightness(125%) !important;
 }
 
 .hovered {
-  background-color: #ffb74d;
-  color: white;
+  background-color: #ffb74d !important;
+  color: white !important;
+}
+
+.failtest {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px;
 }
 
 .commitID {
