@@ -16,6 +16,7 @@ if (window.location.href.includes('cs439')) {
     $("body").prepend(modhtml);
     // $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('tr:gt(0)').find('td:lt(3)').css('text-align', 'center');
+    $('tr:gt(0)').find('td:lt(3)').addClass('commitID');
     $('table').find('tr').each(function() {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').each(function() {
