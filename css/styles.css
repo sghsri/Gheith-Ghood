@@ -89,3 +89,11 @@ td:nth-of-type(n+2) {
 #more {
   cursor: auto;
 }
+
+#data-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  margin: auto;
+  cursor: pointer;
+}
