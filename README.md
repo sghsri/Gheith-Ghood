@@ -11,3 +11,4 @@ make this look good
 4) ~~Some way to preview/display tests with output in browser, without downloading files~~
 5) ~~Option to sort commits by number of tests passing~~
 6) Way to highlight/keep track of your own commit ID
+7) A way to refute tests / mark them as incorrect
