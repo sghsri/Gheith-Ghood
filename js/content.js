@@ -16,7 +16,7 @@ if (window.location.href.includes('cs439')) {
         $("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
         $("#data-modal").fadeIn(150);
     }
-    $('td:eq(0)').html('<p>commit id<input id="search" value="' + localStorage.getItem("commitID") + '" style="margin-left:20px;width:60%;"></input></p>')
+
     var modhtml = `<div class=modal id=myModal>
 							<div class=modal-content>
 							   <span class=close>×</span>
@@ -29,10 +29,19 @@ if (window.location.href.includes('cs439')) {
     $("body").prepend(modhtml);
     // $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('tr:gt(0)').find('td:lt(3):gt(0)').css('text-align', 'center');
+    $('td:eq(1)').css('cursor','auto');
     $('tr:gt(0)').find('td:lt(3)').addClass('commitID');
     $('table').find('tr').each(function () {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
+        $(this).find('td:gt(2)').css('cursor','pointer');
     });
+    // This filters the list once when we load the site
+    var savedCommitId = localStorage.getItem('commitID');
+    savedCommitId = savedCommitId ? savedCommitId : "";
+    if(savedCommitId){
+        filterList(savedCommitId);
+    }
+    $('td:eq(0)').html('<p>commit id<input id="search" value="' + savedCommitId + '" style="margin-left:20px;width:60%;"></input></p>');
     //     $(this).find('td:gt(2)').each(function() {
     //         var color = $(this).css('background-color');
     //         var status = '';
@@ -76,7 +85,7 @@ if (window.location.href.includes('cs439')) {
         $(this).parent().find("#more").toggleClass('hidden');
         $(this).parent().find("td:gt(2)").toggleClass('selected');
         if ($(this).parent().find("#failedList>li").length == 0) {
-            $(this).parent().find('#more').append('<h3 style="margin-bottom:0px;font-weight:bold;color:red;">Failed: </h3><ul style="list-style-type: none;margin-top:0px;"id="failedList"></ul>');
+            $(this).parent().find('#more').append('<ul style="list-style-type: none;margin-top:5px;"id="failedList"></ul>');
             var failedTests = [];
             $(this).parent().find('td').each(function () {
                 var color = $(this).css('background-color');
@@ -86,7 +95,7 @@ if (window.location.href.includes('cs439')) {
                 }
             });
             for (let i in failedTests) {
-                $(this).parent().find('#failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;"><p  id="failtest" class="failtest">${failedTests[i].name}</p></li>`);
+                $(this).parent().find('#failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;cursor:pointer;"><div class='chip'><p  id="failtest" class="failtest">${failedTests[i].name}</p></div></li>`);
             }
         }
     });
@@ -204,8 +213,8 @@ if (window.location.href.includes('cs439')) {
         window.localStorage.setItem('commitID', id);
     }
 
-    // This filters the list once when we load the site
-    filterList(localStorage.getItem('commitID'));
+
+
 
     // When the document loads, we want to increment the number of people that are on the site
     // We also send a callback function, which the db.js file uses to log the number of people online
