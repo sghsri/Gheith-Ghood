@@ -29,16 +29,16 @@ if (window.location.href.includes('cs439')) {
     $("body").prepend(modhtml);
     // $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('tr:gt(0)').find('td:lt(3):gt(0)').css('text-align', 'center');
-    $('td:eq(1)').css('cursor','auto');
+    $('td:eq(1)').css('cursor', 'auto');
     $('tr:gt(0)').find('td:lt(3)').addClass('commitID');
     $('table').find('tr').each(function () {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
-        $(this).find('td:gt(2)').css('cursor','pointer');
+        $(this).find('td:gt(2)').css('cursor', 'pointer');
     });
     // This filters the list once when we load the site
     var savedCommitId = localStorage.getItem('commitID');
     savedCommitId = savedCommitId ? savedCommitId : "";
-    if(savedCommitId){
+    if (savedCommitId) {
         filterList(savedCommitId);
     }
     $('td:eq(0)').html('<p>commit id<input id="search" value="' + savedCommitId + '" style="margin-left:20px;width:60%;"></input></p>');
@@ -102,7 +102,7 @@ if (window.location.href.includes('cs439')) {
     $('tr:gt(0)').on('click', 'td:gt(2)', function () {
         displayTest($(this).index());
     })
-    $('table').on('mouseout', 'td', function () {
+    $('table').on('mouseleave', 'td', function () {
         $('td').removeClass('hovered');
     })
     $("#search").on('input', function () {
@@ -218,13 +218,17 @@ if (window.location.href.includes('cs439')) {
 
     // When the document loads, we want to increment the number of people that are on the site
     // We also send a callback function, which the db.js file uses to log the number of people online
-    chrome.runtime.sendMessage({ type: 'incrementCounter' }, (num) => {
+    chrome.runtime.sendMessage({
+        type: 'incrementCounter'
+    }, (num) => {
         numUsers = num;
     });
 
     // When the user closes the webpage, we decrement the number of people on the site
     window.onbeforeunload = function () {
-        chrome.runtime.sendMessage({ type: 'decrementCounter' }, (num) => {
+        chrome.runtime.sendMessage({
+            type: 'decrementCounter'
+        }, (num) => {
             numUsers = num;
         });
     };
