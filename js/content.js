@@ -9,6 +9,7 @@ if (window.location.href.includes('cs439')) {
     $('body').append(`<div class="modal" id="data-modal">
                         <div class="modal-content">
                           <h1 id="users-online"></h1>
+                          <div id="container" style="min-width: 400px; max-width: 600px; height: 400px; margin: 0 auto"></div>
                         </div>
                       </div>`);
     $('body').append('<svg xmlns="http://www.w3.org/2000/svg" id="data-toggle" width="24" height="24" viewBox="0 0 24 24"><path d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>');
@@ -31,7 +32,7 @@ if (window.location.href.includes('cs439')) {
     $('tr:gt(0)').find('td:lt(3):gt(0)').css('text-align', 'center');
     $('td:eq(1)').css('cursor', 'auto');
     $('tr:gt(0)').find('td:lt(3)').addClass('commitID');
-    $('table').find('tr').each(function () {
+    $('table').find('tr').each(function() {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').css('cursor', 'pointer');
     });
@@ -59,14 +60,14 @@ if (window.location.href.includes('cs439')) {
     //         $(this).css('background-color', '');
     //     });
     // });
-    $('.modal').click(function () {
+    $('.modal').click(function() {
         $(this).fadeOut(150);
     });
-    $('table').on('mouseenter', 'td', function () {
+    $('table').on('mouseenter', 'td', function() {
         var index = $(this).index();
         if (index > 2) {
-            $('table').find('tr').each(function () {
-                $(this).find(`td:eq(${index})`).each(function () {
+            $('table').find('tr').each(function() {
+                $(this).find(`td:eq(${index})`).each(function() {
                     $(this).addClass('hovered');
                 });
             });
@@ -79,7 +80,7 @@ if (window.location.href.includes('cs439')) {
 
         }
     })
-    $('tr:gt(0)').on('click', 'td:lt(3)', function () {
+    $('tr:gt(0)').on('click', 'td:lt(3)', function() {
         // $(this).parent().find('td:lt(3)').removeClass('hovered')
         // $(this).parent().addClass('open');
         $(this).parent().find("#more").toggleClass('hidden');
@@ -87,7 +88,7 @@ if (window.location.href.includes('cs439')) {
         if ($(this).parent().find("#failedList>li").length == 0) {
             $(this).parent().find('#more').append('<ul style="list-style-type: none;margin-top:5px;"id="failedList"></ul>');
             var failedTests = [];
-            $(this).parent().find('td').each(function () {
+            $(this).parent().find('td').each(function() {
                 var color = $(this).css('background-color');
                 if (color == 'rgb(255, 0, 0)') {
                     status = 'fail';
@@ -99,24 +100,24 @@ if (window.location.href.includes('cs439')) {
             }
         }
     });
-    $('tr:gt(0)').on('click', 'td:gt(2)', function () {
+    $('tr:gt(0)').on('click', 'td:gt(2)', function() {
         displayTest($(this).index());
     })
-    $('table').on('mouseleave', 'td', function () {
+    $('table').on('mouseleave', 'td', function() {
         $('td').removeClass('hovered');
     })
-    $("#search").on('input', function () {
+    $("#search").on('input', function() {
         var val = $(this).val();
         filterList(val)
         storeCommitID(e.target.value);
     });
-    $("tr").on('click', 'li ', function (e) {
+    $("tr").on('click', 'li ', function(e) {
         displayTest($(this).val());
         e.stopPropagation();
     });
 
     function filterList(id) {
-        $('tr:gt(0)').each(function () {
+        $('tr:gt(0)').each(function() {
             if (!($(this).find('td:eq(0)').text().startsWith(id))) {
                 $(this).addClass('hidden');
             } else {
@@ -150,27 +151,27 @@ if (window.location.href.includes('cs439')) {
 
     function sortList() {
         var sortedRows = rows.slice();
-        sortedRows.sort(function (a, b) {
+        sortedRows.sort(function(a, b) {
             var passA = $(a).find('td:eq(2)').text();
             var passB = $(b).find('td:eq(2)').text();
             return parseInt(passB) - parseInt(passA);
         });
         $('table>tr').remove();
-        sortedRows.each(function () {
+        sortedRows.each(function() {
             $('table').append($(this));
         });
     }
-    $('.close').click(function () {
+    $('.close').click(function() {
         $("#myModal").fadeOut(fadetime);
     });
 
     function resetList() {
         $('table>tr').remove();
-        rows.each(function () {
+        rows.each(function() {
             $('table').append($(this));
         });
     }
-    $('td:eq(2)').click(function () {
+    $('td:eq(2)').click(function() {
         if ($(this).text().includes(' ▶ ')) {
             $(this).find('span').text(' ▼ ');
             sortList();
@@ -186,27 +187,72 @@ if (window.location.href.includes('cs439')) {
         let greenAvg = 0;
         let blueAvg = 0;
         let numMoods = 0;
-        $('tr:gt(0)').each(function () {
+        $('tr:gt(0)').each(function() {
             var mood = $(this).find('td:eq(1)').css('color');
             switch (mood) {
                 case "rgb(255, 0, 0)":
-                    redAvg += 255;
+                    redAvg++;
                     break;
                 case "rgb(0, 128, 0)":
-                    greenAvg += 255;
+                    greenAvg++;
                     break;
                 case "rgb(0, 0, 255)":
-                    blueAvg += 255;
+                    blueAvg++;
                     break;
                 default:
                     numMoods++;
                     break;
             }
         });
-        redAvg /= numMoods;
-        greenAvg /= numMoods;
-        blueAvg /= numMoods;
-        $('td:eq(1)').css('color', `rgb(${redAvg}, ${greenAvg}, ${blueAvg})`);
+        Highcharts.chart('container', {
+            chart: {
+                polar: true,
+                type: 'line'
+            },
+            xAxis: {
+                categories: ['Happy', 'Confused', 'Sad'],
+                tickmarkPlacement: 'on',
+                lineWidth: 0
+            },
+            title: {
+                text: 'Class Mood'
+            },
+            yAxis: {
+                gridLineInterpolation: 'polygon',
+                lineWidth: 0,
+                min: 0
+            },
+
+            tooltip: {
+                shared: false,
+                pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'People',
+                data: [{
+                    y: greenAvg,
+                    color: "rgb(0, 128, 0)"
+                }, {
+                    y: blueAvg,
+                    color: "rgb(0, 0, 255)"
+                }, {
+                    y: redAvg,
+                    color: "rgb(255, 0, 0)"
+                }],
+                pointPlacement: 'on'
+            }]
+        }, function(chart) {
+            var legend = chart.legend;
+            legend.group.hide();
+            legend.box.hide();
+            legend.display = false;
+
+
+        });
+        // $('td:eq(1)').css('color', `rgb(${redAvg}, ${greenAvg}, ${blueAvg})`);
     }
 
     function storeCommitID(id) {
@@ -225,7 +271,7 @@ if (window.location.href.includes('cs439')) {
     });
 
     // When the user closes the webpage, we decrement the number of people on the site
-    window.onbeforeunload = function () {
+    window.onbeforeunload = function() {
         chrome.runtime.sendMessage({
             type: 'decrementCounter'
         }, (num) => {

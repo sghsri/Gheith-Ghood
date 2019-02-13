@@ -10,7 +10,7 @@
     "*://*.cs.utexas.edu/~gheith/*"
   ],
   "content_scripts": [{
-    "js": ["js/jquery-3.3.1.min.js", "js/content.js"],
+    "js": ["js/jquery-3.3.1.min.js", "js/highcharts.js", "js/highcharts-more.js","js/content.js"],
     "css": ["css/styles.css"],
     "matches": ["https://www.cs.utexas.edu/~gheith/*"]
   }],
