@@ -43,23 +43,7 @@ if (window.location.href.includes('cs439')) {
         filterList(savedCommitId);
     }
     $('td:eq(0)').html('<p>commit id<input id="search" value="' + savedCommitId + '" style="margin-left:20px;width:60%;"></input></p>');
-    //     $(this).find('td:gt(2)').each(function() {
-    //         var color = $(this).css('background-color');
-    //         var status = '';
-    //         if (color == 'rgb(255, 0, 0)') {
-    //             status = 'fail';
-    //         } else if (color == 'rgb(0, 128, 0)') {
-    //             status = 'success';
-    //         }
-    //         $(this).addClass(status);
-    //         var index = $(this).index();
-    //         var test = $('tr:eq(0)').find(`td:eq(${index})`).text();
-    //         if (status == 'fail') {
-    //             $(this).parent().find('#more').append(`<p style="font-size:small;margin:0px;padding:0px;">${status}: ${test}</p>`);
-    //         }
-    //         $(this).css('background-color', '');
-    //     });
-    // });
+
     $('.modal').click(function() {
         $(this).fadeOut(150);
     });
@@ -72,12 +56,9 @@ if (window.location.href.includes('cs439')) {
                 });
             });
         } else {
-            if ($(this).parent().index() != 0) {
+            if ($(this).parent().index() > 1) {
                 $(this).parent().find('td:lt(3)').addClass('hovered');
-            } else {
-                $(this).addClass('hovered');
             }
-
         }
     })
     $('tr:gt(0)').on('click', 'td:lt(3)', function() {
@@ -100,7 +81,7 @@ if (window.location.href.includes('cs439')) {
             }
         }
     });
-    $('tr:gt(0)').on('click', 'td:gt(2)', function() {
+    $('tr:gt(1)').on('click', 'td:gt(2)', function() {
         displayTest($(this).index());
     })
     $('table').on('mouseleave', 'td', function() {
@@ -117,7 +98,7 @@ if (window.location.href.includes('cs439')) {
     });
 
     function filterList(id) {
-        $('tr:gt(0)').each(function() {
+        $('tr:gt(1)').each(function() {
             if (!($(this).find('td:eq(0)').text().startsWith(id))) {
                 $(this).addClass('hidden');
             } else {
@@ -140,7 +121,7 @@ if (window.location.href.includes('cs439')) {
 
 
     function getTestInfo(index) {
-        let td = $(`td:eq(${index})`);
+        let td = $(`tr:eq(1)>td:eq(${index})`);
         return {
             rowindex: index,
             name: $(td).find('a').attr('title').substring(0, 5),
@@ -181,6 +162,27 @@ if (window.location.href.includes('cs439')) {
         }
     });
     averageMood();
+    countFails();
+
+    function countFails() {
+        var fails = [];
+        $('tr:eq(0)>td:gt(2)').each(function() {
+            var test = $(this).text();
+            var index = $(this).index();
+            let totalFail = 0;
+            $('tr:gt(0)').each(function() {
+                var ti = $(this).find(`td`).eq(index);
+                if (ti.text() == 'X') {
+                    totalFail++;
+                }
+            });
+            fails.push(totalFail);
+        });
+        $('tr:eq(0)').before('<tr class="testfails" ><td class="emptytd"><td class="emptytd"><td class="emptytd"></tr>');
+        for (let i = 0; i < fails.length; i++) {
+            $(".testfails").append(`<td style="font-size:12px;font-weight:bold;padding:0px 2px 2px 2px;">${fails[i]}</td>`);
+        }
+    }
 
     function averageMood() {
         let redAvg = 0;
@@ -258,8 +260,6 @@ if (window.location.href.includes('cs439')) {
     function storeCommitID(id) {
         window.localStorage.setItem('commitID', id);
     }
-
-
 
 
     // When the document loads, we want to increment the number of people that are on the site
