@@ -108,7 +108,7 @@ td:nth-of-type(n+2) {
     z-index: -999;
     opacity: 0 !important;
     height: 0 !important;
-    transition-delay: 0.2s, 0s !important;
+    transition-delay: 0.1s, 0s !important;
     padding-bottom: 0 !important;
 }
 
@@ -132,8 +132,8 @@ td:nth-of-type(n+2) {
 .more {
     padding-bottom: 10px;
     opacity: 1;
-    transition: 0.3s height, 0.3s opacity, 0.3s padding;
-    transition-delay: 0s, 0.2s;
+    transition: 0.1s height, 0.1s opacity, 0.1s padding;
+    transition-delay: 0s, 0.1s;
 }
 
 #data-toggle {
