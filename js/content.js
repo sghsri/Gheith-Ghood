@@ -15,7 +15,7 @@ if (window.location.href.includes('cs439')) {
                       </div>`);
     $('body').append('<svg xmlns="http://www.w3.org/2000/svg" id="data-toggle" width="24" height="24" viewBox="0 0 24 24"><path d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>');
     document.getElementById("data-toggle").onclick = (e) => {
-        $("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
+        //$("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
         $("#data-modal").fadeIn(150);
     }
 
@@ -275,19 +275,19 @@ if (window.location.href.includes('cs439')) {
 
     // When the document loads, we want to increment the number of people that are on the site
     // We also send a callback function, which the db.js file uses to log the number of people online
-    chrome.runtime.sendMessage({
-        type: 'incrementCounter'
-    }, (num) => {
-        numUsers = num;
-    });
-
-    // When the user closes the webpage, we decrement the number of people on the site
-    window.onbeforeunload = function() {
-        chrome.runtime.sendMessage({
-            type: 'decrementCounter'
-        }, (num) => {
-            numUsers = num;
-        });
-    };
+    //chrome.runtime.sendMessage({
+        //type: 'incrementCounter'
+    //}, (num) => {
+        //numUsers = num;
+    //});
+//
+    //// When the user closes the webpage, we decrement the number of people on the site
+    //window.onbeforeunload = function() {
+        //chrome.runtime.sendMessage({
+            //type: 'decrementCounter'
+        //}, (num) => {
+            //numUsers = num;
+        //});
+    //};
 
 }
