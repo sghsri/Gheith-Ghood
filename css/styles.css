@@ -104,7 +104,12 @@ td:nth-of-type(n+2) {
 }
 
 .hidden {
-    display: none;
+    position: relative;
+    z-index: -999;
+    opacity: 0 !important;
+    height: 0 !important;
+    transition-delay: 0.2s, 0s !important;
+    padding-bottom: 0 !important;
 }
 
 .clicked {
@@ -124,8 +129,11 @@ td:nth-of-type(n+2) {
     cursor: pointer;
 }
 
-#more {
-    cursor: auto;
+.more {
+    padding-bottom: 10px;
+    opacity: 1;
+    transition: 0.3s height, 0.3s opacity, 0.3s padding;
+    transition-delay: 0s, 0.2s;
 }
 
 #data-toggle {
@@ -134,4 +142,8 @@ td:nth-of-type(n+2) {
     right: 20px;
     margin: auto;
     cursor: pointer;
+}
+
+.failedList li {
+    width: max-content;
 }

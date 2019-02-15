@@ -37,6 +37,7 @@ if (window.location.href.includes('cs439')) {
     $('table').find('tr').each(function() {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').css('cursor', 'pointer');
+        $(this).find('td:eq(0)').append('<div class="more hidden"></div>');
         if ($(this).css('background-color') == "rgb(255, 255, 0)") {
             $(this).find('td').each(function() {
                 if ($(this).text() == 'X') {
@@ -74,10 +75,10 @@ if (window.location.href.includes('cs439')) {
     $('tr:gt(0)').on('click', 'td:lt(3)', function() {
         // $(this).parent().find('td:lt(3)').removeClass('hovered')
         // $(this).parent().addClass('open');
-        $(this).parent().find("#more").toggleClass('hidden');
+        $(this).parent().find(".more").toggleClass('hidden');
         $(this).parent().find("td:gt(2)").toggleClass('selected');
         if ($(this).parent().find("#failedList>li").length == 0) {
-            $(this).parent().find('#more').append('<ul style="list-style-type: none;margin-top:5px;"id="failedList"></ul>');
+            $(this).parent().find('.more').append('<ul style="list-style-type: none;margin-top:5px;"id="failedList"></ul>');
             var failedTests = [];
             $(this).parent().find('td').each(function() {
                 var color = $(this).css('background-color');
@@ -88,6 +89,7 @@ if (window.location.href.includes('cs439')) {
             });
             for (let i in failedTests) {
                 $(this).parent().find('#failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;cursor:pointer;"><div class='chip'><p  id="failtest" class="failtest">${failedTests[i].name}</p><div class="gheithcheck" style="${gheith.includes(failedTests[i].rowindex) ? "display:block;":""}"></div></div></li>`);
+                $(this).parent().find('.more').css('height', $(this).parent().find('.failedList').height());
             }
         }
     });
