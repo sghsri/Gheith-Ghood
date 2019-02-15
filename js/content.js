@@ -5,6 +5,7 @@ if (window.location.href.includes('cs439')) {
     $('td:eq(2)').css('display', 'flex').append('<span style="margin-left: 5px"> ▶ </span>');
     $('td:eq(2)').css('cursor', 'pointer');
     var rows = $('tr:gt(0)');
+    var gheith = [];
     $('body').append('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
     $('body').append(`<div class="modal" id="data-modal">
                         <div class="modal-content">
@@ -17,6 +18,7 @@ if (window.location.href.includes('cs439')) {
         $("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
         $("#data-modal").fadeIn(150);
     }
+
 
     var modhtml = `<div class=modal id=myModal>
 							<div class=modal-content>
@@ -35,14 +37,22 @@ if (window.location.href.includes('cs439')) {
     $('table').find('tr').each(function() {
         $(this).find('td:eq(0)').append('<div id="more" class="hidden"></div>');
         $(this).find('td:gt(2)').css('cursor', 'pointer');
+        if ($(this).css('background-color') == "rgb(255, 255, 0)") {
+            $(this).find('td').each(function() {
+                if ($(this).text() == 'X') {
+                    gheith.push($(this).index());
+                }
+            });
+        }
     });
-    // This filters the list once when we load the site
-    var savedCommitId = localStorage.getItem('commitID');
-    savedCommitId = savedCommitId ? savedCommitId : "";
-    if (savedCommitId) {
-        filterList(savedCommitId);
-    }
-    $('td:eq(0)').html('<p>commit id<input id="search" value="' + savedCommitId + '" style="margin-left:20px;width:60%;"></input></p>');
+    console.log(gheith);
+    // // This filters the list once when we load the site
+    // var savedCommitId = localStorage.getItem('commitID');
+    // savedCommitId = savedCommitId ? savedCommitId : "";
+    // if (savedCommitId) {
+    //     filterList(savedCommitId);
+    // }
+    $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:60%;"></input></p>');
 
     $('.modal').click(function() {
         $(this).fadeOut(150);
@@ -77,7 +87,7 @@ if (window.location.href.includes('cs439')) {
                 }
             });
             for (let i in failedTests) {
-                $(this).parent().find('#failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;cursor:pointer;"><div class='chip'><p  id="failtest" class="failtest">${failedTests[i].name}</p></div></li>`);
+                $(this).parent().find('#failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;cursor:pointer;"><div class='chip'><p  id="failtest" class="failtest">${failedTests[i].name}</p><div class="gheithcheck" style="${gheith.includes(failedTests[i].rowindex) ? "display:block;":""}"></div></div></li>`);
             }
         }
     });
@@ -90,7 +100,7 @@ if (window.location.href.includes('cs439')) {
     $("#search").on('input', function() {
         var val = $(this).val();
         filterList(val)
-        storeCommitID(e.target.value);
+        // storeCommitID(e.target.value);
     });
     $("tr").on('click', 'li ', function(e) {
         displayTest($(this).val());
@@ -257,9 +267,9 @@ if (window.location.href.includes('cs439')) {
         // $('td:eq(1)').css('color', `rgb(${redAvg}, ${greenAvg}, ${blueAvg})`);
     }
 
-    function storeCommitID(id) {
-        window.localStorage.setItem('commitID', id);
-    }
+    // function storeCommitID(id) {
+    //     window.localStorage.setItem('commitID', id);
+    // }
 
 
     // When the document loads, we want to increment the number of people that are on the site

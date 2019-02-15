@@ -23,11 +23,12 @@ tr:hover {
 }
 
 .chip {
-    display: inline-block;
+    display: flex;
     border-radius: 25px;
-    padding: 2px 25px 5px 25px;
+    padding: 2px 12px 5px 25px;
     height: 20px;
     margin: 2px;
+    width: 60px;
     background-color: red;
     transition: .1s;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -86,6 +87,16 @@ td:nth-of-type(n+2) {
 .emptytd {
     box-shadow: none !important;
     background-color: white !important;
+}
+
+.gheithcheck {
+    display: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    margin-left: 10px;
+    background: yellow;
+    border-radius: 50px;
 }
 
 .success {
