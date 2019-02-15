@@ -52,7 +52,7 @@ if (window.location.href.includes('cs439')) {
     // if (savedCommitId) {
     //     filterList(savedCommitId);
     // }
-    $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:60%;"></input></p>');
+    $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:200px;"></input></p>');
 
     $('.modal').click(function() {
         $(this).fadeOut(150);
