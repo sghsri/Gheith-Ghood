@@ -222,13 +222,13 @@ if (window.location.href.includes('cs439')) {
             },
             yAxis: {
                 gridLineInterpolation: 'polygon',
-                lineWidth: 0,
+                lineWidth: 1,
                 min: 0
             },
 
             tooltip: {
                 shared: false,
-                pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+                pointFormat: '<span style="color:{series.color}"><b>{point.y}</b><br/>'
             },
             credits: {
                 enabled: false
