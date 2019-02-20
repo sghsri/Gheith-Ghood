@@ -1,6 +1,6 @@
 if (window.location.href.includes('cs439')) {
     let numUsers = -999;
-    let fadetime = 100;
+    let fadetime = 125;
     $('td:lt(3)').css('padding', '10px');
     $('td:eq(2)').css('display', 'flex').append('<span style="margin-left: 5px"> ▶ </span>');
     $('td:eq(2)').css('cursor', 'pointer');
@@ -15,8 +15,13 @@ if (window.location.href.includes('cs439')) {
                       </div>`);
     $('body').append('<svg xmlns="http://www.w3.org/2000/svg" id="data-toggle" width="24" height="24" viewBox="0 0 24 24"><path d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>');
     document.getElementById("data-toggle").onclick = (e) => {
+<<<<<<< HEAD
         //$("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
         $("#data-modal").fadeIn(150);
+=======
+        $("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
+        $("#data-modal").fadeIn(fadetime);
+>>>>>>> 8f8eb034a148dc4f36246be18556ddffe01bdaaa
     }
 
 
@@ -52,10 +57,15 @@ if (window.location.href.includes('cs439')) {
     // if (savedCommitId) {
     //     filterList(savedCommitId);
     // }
-    $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:60%;"></input></p>');
+    $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:200px;"></input></p>');
 
+    $(document).keyup(function(e) {
+        if (e.keyCode === 27) {
+            $(".modal").fadeOut(fadetime);
+        }
+    });
     $('.modal').click(function() {
-        $(this).fadeOut(150);
+        $(this).fadeOut(fadetime);
     });
     $('table').on('mouseenter', 'td', function() {
         var index = $(this).index();

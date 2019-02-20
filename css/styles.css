@@ -103,6 +103,10 @@ td:nth-of-type(n+2) {
     background-color: #388E3C;
 }
 
+tr.hidden {
+    display: none;
+}
+
 .hidden {
     position: relative;
     z-index: -999;
