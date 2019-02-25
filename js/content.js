@@ -14,13 +14,10 @@ if (window.location.href.includes('cs439')) {
                         </div>
                       </div>`);
     $('body').append('<svg xmlns="http://www.w3.org/2000/svg" id="data-toggle" width="24" height="24" viewBox="0 0 24 24"><path d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>');
-    document.getElementById("data-toggle").onclick = (e) => {
-        //$("#users-online").html(`There ${numUsers == 1 ? "is" : "are"} ` + numUsers + ` user${numUsers == 1 ? '' : 's'} currently online. ${numUsers == 1 ? "It's you :)" : ""}`);
+    $("#data-toggle").click(function() {
         $("#data-modal").fadeIn(150);
-    }
-
-
-    var modhtml = `<div class=modal id=myModal>
+    });
+    $("body").prepend(`<div class=modal id=myModal>
 							<div class=modal-content>
 							   <span class=close>×</span>
                                <div style="display:flex;">
@@ -28,8 +25,7 @@ if (window.location.href.includes('cs439')) {
                                <iframe style="width:30%;"id="solution"></iframe>
                                </div>
 							</div>
-	              </div>`;
-    $("body").prepend(modhtml);
+	              </div>`);
     // $('body').append('<iframe id="test" src="https://www.cs.utexas.edu/~gheith/cs439_sp19_p2/51f1fa0cca16b314c55ec792117a3df46a329250.cc"></iframe>');
     $('tr:gt(0)').find('td:lt(3):gt(0)').css('text-align', 'center');
     $('td:eq(1)').css('cursor', 'auto');
@@ -74,12 +70,15 @@ if (window.location.href.includes('cs439')) {
     $('tr:gt(0)').on('click', 'td:lt(3)', function() {
         // $(this).parent().find('td:lt(3)').removeClass('hovered')
         // $(this).parent().addClass('open');
-        $(this).parent().find(".more").toggleClass('hidden');
-        $(this).parent().find("td:gt(2)").toggleClass('selected');
-        if ($(this).parent().find(".failedList>li").length == 0) {
-            $(this).parent().find('.more').append('<ul style="list-style-type: none;margin-top:5px;"class="failedList"></ul>');
+        var currow = $(this).parent();
+        currow.find(".more").toggleClass('hidden');
+        // setTimeout(function() {
+        //     currow.find("td:gt(2)").toggleClass('selected');
+        // }, 100);
+        if (currow.find(".failedList>li").length == 0) {
+            currow.find('.more').append('<ul style="list-style-type: none;margin-top:5px;"class="failedList"></ul>');
             var failedTests = [];
-            $(this).parent().find('td').each(function() {
+            currow.find('td').each(function() {
                 var color = $(this).css('background-color');
                 if (color == 'rgb(255, 0, 0)') {
                     status = 'fail';
@@ -87,10 +86,17 @@ if (window.location.href.includes('cs439')) {
                 }
             });
             for (let i in failedTests) {
-                $(this).parent().find('.failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;cursor:pointer;"><div class='chip'><p  id="failtest" class="failtest">${failedTests[i].name}</p><div class="gheithcheck" style="${gheith.includes(failedTests[i].rowindex) ? "display:block;":""}"></div></div></li>`);
-                $(this).parent().find('.more').css('height', $(this).parent().find('.failedList').height());
+                currow.find('.failedList').append(`<li value="${failedTests[i].rowindex}" style="margin:0px;cursor:pointer;"><div class='chip'><p  id="failtest" class="failtest">${failedTests[i].name}</p><div class="gheithcheck" style="${gheith.includes(failedTests[i].rowindex) ? "display:block;":""}"></div></div></li>`);
+                currow.find('.more').css('height', currow.find('.failedList').css('height'));
             }
         }
+        // var tds = currow.find('td:gt(2)');
+        // for (let i = 0; i < tds.length; i++) {
+        //     let td = $(tds[i]);
+        //     td.css('background-color', getSelectedColor(td.css('background-color')));
+        //
+        // }
+
     });
     $('tr:gt(1)').on('click', 'td:gt(2)', function() {
         displayTest($(this).index());
@@ -107,6 +113,21 @@ if (window.location.href.includes('cs439')) {
         displayTest($(this).val());
         e.stopPropagation();
     });
+
+    function getSelectedColor(color) {
+        switch (color) {
+            case "rgb(255, 0, 0)":
+                return "rgb(255, 77, 77)"
+            case "rgb(0, 128, 0)":
+                return "rgb(51, 179, 51)";
+            case "rgb(255, 77, 77)":
+                return "red";
+            case "rgb(51, 179, 51)":
+                return "green";
+            default:
+                return "white";
+        }
+    }
 
     function filterList(id) {
         $('tr:gt(1)').each(function() {
@@ -276,18 +297,18 @@ if (window.location.href.includes('cs439')) {
     // When the document loads, we want to increment the number of people that are on the site
     // We also send a callback function, which the db.js file uses to log the number of people online
     //chrome.runtime.sendMessage({
-        //type: 'incrementCounter'
+    //type: 'incrementCounter'
     //}, (num) => {
-        //numUsers = num;
+    //numUsers = num;
     //});
-//
+    //
     //// When the user closes the webpage, we decrement the number of people on the site
     //window.onbeforeunload = function() {
-        //chrome.runtime.sendMessage({
-            //type: 'decrementCounter'
-        //}, (num) => {
-            //numUsers = num;
-        //});
+    //chrome.runtime.sendMessage({
+    //type: 'decrementCounter'
+    //}, (num) => {
+    //numUsers = num;
+    //});
     //};
 
 }

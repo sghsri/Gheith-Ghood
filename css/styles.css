@@ -67,7 +67,7 @@ tr:hover {
 
 td {
     vertical-align: top;
-    transition: 0.2s all;
+    transition: 0.1s all;
 }
 
 td:nth-of-type(n+2) {
