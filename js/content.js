@@ -6,7 +6,6 @@ if (window.location.href.includes('cs439')) {
     $('td:eq(2)').css('cursor', 'pointer');
     var rows = $('tr:gt(0)');
     var gheith = [];
-    $('body').append('<h2 id="empty" class="hidden" style="color:red">Could not find any commits with that id.</h2>');
     $('body').append(`<div class="modal" id="data-modal">
                         <div class="modal-content">
                           <h1 id="users-online"></h1>
