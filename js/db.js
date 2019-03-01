@@ -1,11 +1,11 @@
 // Initialize Firebase
 const config = {
-    apiKey: "",
-    authDomain: "gheithgood.firebaseapp.com",
-    databaseURL: "https://gheithgood.firebaseio.com",
-    projectId: "gheithgood",
-    storageBucket: "gheithgood.appspot.com",
-    messagingSenderId: "420650821813"
+  apiKey: "AIzaSyAGHcFwIiXQ8xgAMs5V4Oi6Xgm2R_akzos",
+  authDomain: "gheith-633da.firebaseapp.com",
+  databaseURL: "https://gheith-633da.firebaseio.com",
+  projectId: "gheith-633da",
+  storageBucket: "gheith-633da.appspot.com",
+  messagingSenderId: "97728470514"
 };
 firebase.initializeApp(config);
 
