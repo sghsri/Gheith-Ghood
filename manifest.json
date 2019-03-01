@@ -6,6 +6,7 @@
   "description": "Adds features and improves the look of Dr. Gheith's 439 project website",
   "permissions": ["tabs",
     "declarativeContent",
+    "storage",
     "identity",
     "*://*.cs.utexas.edu/~gheith/*"
   ],
