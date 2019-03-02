@@ -19,9 +19,13 @@ if (window.location.href.includes('cs439')) {
     $("body").prepend(`<div class=modal id=myModal>
 							<div class=modal-content>
 							   <span class=close>×</span>
+                               <div class="testinfo">
+                                    <h2 style="font-weight:normal;">Test ID: <span id="testnumber"></span></h2>
+                                    <button style="float:right;">Hello</button>
+                               </div>
                                <div style="display:flex;">
-							   <iframe style="width:70%; height:60%;" id="problem"></iframe>
-                               <iframe style="width:30%;"id="solution"></iframe>
+							   <iframe style="width:70%; height:85%;" id="problem"></iframe>
+                               <iframe style="width:30%;height:85%;"id="solution"></iframe>
                                </div>
 							</div>
 	              </div>`);
@@ -145,6 +149,7 @@ if (window.location.href.includes('cs439')) {
 
     function displayTest(index) {
         var test = getTestInfo(index);
+        $("#testnumber").text(test.name);
         $("#problem").attr('src', test.test);
         $("#solution").attr('src', test.sol);
         $("#myModal").fadeIn(fadetime);
