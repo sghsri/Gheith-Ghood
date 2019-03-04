@@ -24,6 +24,26 @@ const db = firebase.database();
 //         });
 //     });
 // }
+
+// This function will listen for any new chrome messages, as that is how the content scripts will communicate with this one
+// The request will look like this: {type: "<name_of_function>", args: {}} where there may or may not be args
+chrome.runtime.onMessage.addListener((request, sender, callback) => {
+    // We handle the different types of messages
+    console.log(request);
+    switch (request.type) {
+        case 'getTestData':
+
+            break;
+        case 'vote':
+            vote(request.project, request.test, request.action);
+            break;
+        default:
+            break;
+    }
+
+    // We return true because we're sending our response asynchronously, so we don't want the function to timeout
+    return true;
+});
 chrome.runtime.onInstalled.addListener(function(details) {
     if (details.reason == "install") {
         chrome.storage.sync.get('votedTests', function(data) {
@@ -38,32 +58,37 @@ chrome.runtime.onInstalled.addListener(function(details) {
     }
 });
 
-vote('cs439_sp19_p6', 'cceff', '++');
-vote('cs439_sp19_p6', 'ccff', '++');
+// vote('cs439_sp19_p6', 'cceff', '++');
+// vote('cs439_sp19_p6', 'ccff', '++');
 
+
+function getTestData(project, test){
+    
+}
 function vote(project, test, action) {
+    console.log(project+ " "+test+ " "+ action);
     let path = `/TestData/${project}`;
-
-    chrome.storage.sync.get('votedTests', function(data) {
-        var vTests = data.votedTests;
-        console.log()
-        if (!vTests[project]) {
-            updateFirebaseVote(path, project, test, action);
-            if (!vTests[project]) {
-                vTests[project] = {};
-            }
-            (vTests[project])[test] = {
-                action: action
-            }
-            chrome.storage.sync.set({
-                votedTests: vTests
-            });
-            console.log(vTests);
-            chrome.storage.sync.get('votedTests', function(data) {
-                data.votedTests;
-            });
-        }
-    });
+    updateFirebaseVote(path, project, test, action);
+    // chrome.storage.sync.get('votedTests', function(data) {
+    //     var vTests = data.votedTests;
+    //     console.log()
+    //     if (!vTests[project]) {
+    //         updateFirebaseVote(path, project, test, action);
+    //         if (!vTests[project]) {
+    //             vTests[project] = {};
+    //         }
+    //         (vTests[project])[test] = {
+    //             action: action
+    //         }
+    //         chrome.storage.sync.set({
+    //             votedTests: vTests
+    //         });
+    //         // console.log(vTests);
+    //         chrome.storage.sync.get('votedTests', function(data) {
+    //             data.votedTests;
+    //         });
+    //     }
+    // });
     //SAVE IN CHROME SYNC STORAGE THAT YOU'VE ALREADY UPVOTED/DOWNVOTED
 }
 
@@ -87,20 +112,3 @@ function updateFirebaseVote(path, project, test, action) {
         return project;
     });
 }
-// This function will listen for any new chrome messages, as that is how the content scripts will communicate with this one
-// The request will look like this: {type: "<name_of_function>", args: {}} where there may or may not be args
-chrome.runtime.onMessage.addListener((request, sender, callback) => {
-    // We handle the different types of messages
-    switch (request.type) {
-        case 'getTestData':
-            break;
-        case 'upvote':
-            vote(request.project, request.test, request.action);
-            break;
-        default:
-            break;
-    }
-
-    // We return true because we're sending our response asynchronously, so we don't want the function to timeout
-    return true;
-});

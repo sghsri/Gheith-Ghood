@@ -21,8 +21,10 @@ if (window.location.href.includes('cs439')) {
 							   <span class=close>×</span>
                                <div class="testinfo">
                                     <h2 style="font-weight:normal;">Test ID: <span id="testnumber"></span></h2>
-                                    <button style="float:right;">Hello</button>
+
                                </div>
+                                    <button class="votebut" id="upvote" value="++">upvote</button>
+                                    <button class="votebut"id="downvote" value="--">downvote</button>
                                <div style="display:flex;">
 							   <iframe style="width:70%; height:85%;" id="problem"></iframe>
                                <iframe style="width:30%;height:85%;"id="solution"></iframe>
@@ -53,8 +55,10 @@ if (window.location.href.includes('cs439')) {
     // }
     $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:60%;"></input></p>');
 
-    $('.modal').click(function() {
-        $(this).fadeOut(150);
+    $('.modal').click(function(e) {
+        if(event.target === this) {
+            $(this).fadeOut(150);
+        }
     });
     $('table').on('mouseenter', 'td', function() {
         var index = $(this).index();
@@ -70,6 +74,21 @@ if (window.location.href.includes('cs439')) {
             }
         }
     })
+    $(".votebut").click(function(e){
+        e.stopPropagation();
+        var project = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1,window.location.pathname.lastIndexOf('.'));
+        var name = $("#testnumber").val();
+        var action = $(this).val();
+        console.log(name);
+        chrome.runtime.sendMessage({type: "vote", project: project, test: name, action:action}, function(response) {
+            // console.log(response.updated);
+            // db.ref(`TestData/${project}/${name}`).once("value", function(data) {
+            //     console.log('hello');
+            //     $("#upvote").text(`upvote: ${data.up}`);
+            //     $("#downvote").text(`downvote: ${data.up}`);
+            // });
+        });
+    });
     $('tr:gt(0)').on('click', 'td:lt(3)', function() {
         // $(this).parent().find('td:lt(3)').removeClass('hovered')
         // $(this).parent().addClass('open');
@@ -101,7 +120,7 @@ if (window.location.href.includes('cs439')) {
         // }
 
     });
-    $('tr:gt(1)').on('click', 'td:gt(2)', function() {
+    $('tr:gt(0)').on('click', 'td:gt(2)', function() {
         displayTest($(this).index());
     })
     $('table').on('mouseleave', 'td', function() {
@@ -150,6 +169,7 @@ if (window.location.href.includes('cs439')) {
     function displayTest(index) {
         var test = getTestInfo(index);
         $("#testnumber").text(test.name);
+        $("#testnumber").val(test.fullname);
         $("#problem").attr('src', test.test);
         $("#solution").attr('src', test.sol);
         $("#myModal").fadeIn(fadetime);
@@ -158,9 +178,12 @@ if (window.location.href.includes('cs439')) {
 
     function getTestInfo(index) {
         let td = $(`tr:eq(1)>td:eq(${index})`);
+        let test = $(td).find('a').attr('title');
+        test = test.substring(0,test.lastIndexOf('.'));
         return {
             rowindex: index,
-            name: $(td).find('a').attr('title').substring(0, 5),
+            fullname: test,
+            name: test.substring(0, 5),
             test: $(td).find('a:eq(0)').attr('href'),
             sol: $(td).find('a:eq(1)').attr('href')
         };
