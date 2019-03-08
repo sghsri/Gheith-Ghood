@@ -1,4 +1,4 @@
-if (window.location.href.includes('cs439')) {
+if (window.location.href.includes('cs439') || window.location.href.includes('cs429h')) {
     let numUsers = -999;
     let fadetime = 100;
     $('td:lt(3)').css('padding', '10px');
