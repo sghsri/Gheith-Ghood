@@ -29,13 +29,13 @@ const db = firebase.database();
 // The request will look like this: {type: "<name_of_function>", args: {}} where there may or may not be args
 chrome.runtime.onMessage.addListener((request, sender, callback) => {
     // We handle the different types of messages
-    console.log(request);
+    // console.log(request);
     switch (request.type) {
         case 'getTestData':
-
+            getTestData(request.project, request.test);
             break;
         case 'vote':
-            vote(request.project, request.test, request.action);
+            vote(request.project, request.test, callback);
             break;
         default:
             break;
@@ -44,13 +44,13 @@ chrome.runtime.onMessage.addListener((request, sender, callback) => {
     // We return true because we're sending our response asynchronously, so we don't want the function to timeout
     return true;
 });
-chrome.runtime.onInstalled.addListener(function(details) {
+chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason == "install") {
-        chrome.storage.sync.get('votedTests', function(data) {
+        chrome.storage.sync.get('votedTests', function (data) {
             if (!data.votedTests) {
                 chrome.storage.sync.set({
                     votedTests: {}
-                }, function() {
+                }, function () {
                     console.log('initialized votedTests ');
                 })
             }
@@ -62,13 +62,17 @@ chrome.runtime.onInstalled.addListener(function(details) {
 // vote('cs439_sp19_p6', 'ccff', '++');
 
 
-function getTestData(project, test){
-    
+function getTestData(project, test) {
+    let path = `/TestData/${project}/`;
+    db.ref(path + '/' + test).once('value').then(function (snap) {
+        console.log(snap.val());
+    });
 }
-function vote(project, test, action) {
-    console.log(project+ " "+test+ " "+ action);
+
+function vote(project, test) {
     let path = `/TestData/${project}`;
-    updateFirebaseVote(path, project, test, action);
+    updateFirebaseVote(path, project, test);
+    // getTestData(project, test);
     // chrome.storage.sync.get('votedTests', function(data) {
     //     var vTests = data.votedTests;
     //     console.log()
@@ -93,22 +97,22 @@ function vote(project, test, action) {
 }
 
 
-function updateFirebaseVote(path, project, test, action) {
-    db.ref(path).transaction(function(project) {
+function updateFirebaseVote(path, project, test) {
+    db.ref(path).transaction(function (project) {
         if (!project) {
             project = {};
         }
         if (!project[test]) {
             project[test] = {
-                up: 0,
-                down: 0
+                flag: 1
             }
-        }
-        if (action == "++") {
-            project[test].up++;
         } else {
-            project[test].down++;
+            project[test].flag++;
         }
         return project;
+    }).then(function () {
+        return db.ref(path + '/' + test).once('value');
+    }).then(function (snap) {
+        console.log(snap.val());
     });
 }

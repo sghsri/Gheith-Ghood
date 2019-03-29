@@ -9,25 +9,23 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
     $('body').append(`<div class="modal" id="data-modal">
                         <div class="modal-content">
                           <h1 id="users-online"></h1>
-                          <div id="container" style="min-width: 400px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+                          <div id="container" style="min-width: 400px; max-width: 600px; height: 100%; margin: 0 auto"></div>
                         </div>
                       </div>`);
     $('body').append('<svg xmlns="http://www.w3.org/2000/svg" id="data-toggle" width="24" height="24" viewBox="0 0 24 24"><path d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>');
-    $("#data-toggle").click(function() {
+    $("#data-toggle").click(function () {
         $("#data-modal").fadeIn(150);
     });
     $("body").prepend(`<div class=modal id=myModal>
 							<div class=modal-content>
 							   <span class=close>×</span>
                                <div class="testinfo">
-                                    <h2 style="font-weight:normal;">Test ID: <span id="testnumber"></span></h2>
-
+                                    <h2 style="font-weight:normal; margin:0px; padding:10px 0px 5px 0px  ;">ID: <span id="testnumber"></span></h2>
+                                    <button class="votebut"id="downvote">Flag Invalid</button>
                                </div>
-                                    <button class="votebut" id="upvote" value="++">upvote</button>
-                                    <button class="votebut"id="downvote" value="--">downvote</button>
                                <div style="display:flex;">
-							   <iframe style="width:70%; height:85%;" id="problem"></iframe>
-                               <iframe style="width:30%;height:85%;"id="solution"></iframe>
+							   <iframe class="testframe" style="width:70%;" id="problem"></iframe>
+                               <iframe class="testframe" style="width:30%;"id="solution"></iframe>
                                </div>
 							</div>
 	              </div>`);
@@ -35,11 +33,11 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
     $('tr:gt(0)').find('td:lt(3):gt(0)').css('text-align', 'center');
     $('td:eq(1)').css('cursor', 'auto');
     $('tr:gt(0)').find('td:lt(3)').addClass('commitID');
-    $('table').find('tr').each(function() {
+    $('table').find('tr').each(function () {
         $(this).find('td:gt(2)').css('cursor', 'pointer');
         $(this).find('td:eq(0)').append('<div class="more hidden"></div>');
         if ($(this).css('background-color') == "rgb(255, 255, 0)") {
-            $(this).find('td').each(function() {
+            $(this).find('td').each(function () {
                 if ($(this).text() == 'X') {
                     gheith.push($(this).index());
                 }
@@ -55,16 +53,16 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
     // }
     $('td:eq(0)').html('<p>commit id<input id="search" value="" style="margin-left:20px;width:60%;"></input></p>');
 
-    $('.modal').click(function(e) {
-        if(event.target === this) {
+    $('.modal').click(function (e) {
+        if (event.target === this) {
             $(this).fadeOut(150);
         }
     });
-    $('table').on('mouseenter', 'td', function() {
+    $('table').on('mouseenter', 'td', function () {
         var index = $(this).index();
         if (index > 2) {
-            $('table').find('tr').each(function() {
-                $(this).find(`td:eq(${index})`).each(function() {
+            $('table').find('tr').each(function () {
+                $(this).find(`td:eq(${index})`).each(function () {
                     $(this).addClass('hovered');
                 });
             });
@@ -74,22 +72,26 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
             }
         }
     })
-    $(".votebut").click(function(e){
+    $(".votebut").click(function (e) {
         e.stopPropagation();
-        var project = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1,window.location.pathname.lastIndexOf('.'));
+        var project = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.lastIndexOf('.'));
         var name = $("#testnumber").val();
-        var action = $(this).val();
         console.log(name);
-        chrome.runtime.sendMessage({type: "vote", project: project, test: name, action:action}, function(response) {
-            // console.log(response.updated);
-            // db.ref(`TestData/${project}/${name}`).once("value", function(data) {
-            //     console.log('hello');
-            //     $("#upvote").text(`upvote: ${data.up}`);
-            //     $("#downvote").text(`downvote: ${data.up}`);
+        chrome.runtime.sendMessage({
+            type: "vote",
+            project: project,
+            test: name,
+        }, function (response) {
+            // chrome.runtime.sendMessage({
+            //     type: "getTestData",
+            //     project: project,
+            //     test: name,
+            // }, function (response) {
+
             // });
         });
     });
-    $('tr:gt(0)').on('click', 'td:lt(3)', function() {
+    $('tr:gt(0)').on('click', 'td:lt(3)', function () {
         // $(this).parent().find('td:lt(3)').removeClass('hovered')
         // $(this).parent().addClass('open');
         var currow = $(this).parent();
@@ -100,7 +102,7 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
         if (currow.find(".failedList>li").length == 0) {
             currow.find('.more').append('<ul style="list-style-type: none;margin-top:5px;"class="failedList"></ul>');
             var failedTests = [];
-            currow.find('td').each(function() {
+            currow.find('td').each(function () {
                 var color = $(this).css('background-color');
                 if (color == 'rgb(255, 0, 0)') {
                     status = 'fail';
@@ -120,18 +122,18 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
         // }
 
     });
-    $('tr:gt(0)').on('click', 'td:gt(2)', function() {
+    $('tr:gt(0)').on('click', 'td:gt(2)', function () {
         displayTest($(this).index());
     })
-    $('table').on('mouseleave', 'td', function() {
+    $('table').on('mouseleave', 'td', function () {
         $('td').removeClass('hovered');
     })
-    $("#search").on('input', function() {
+    $("#search").on('input', function () {
         var val = $(this).val();
         filterList(val)
         // storeCommitID(e.target.value);
     });
-    $("tr").on('click', 'li ', function(e) {
+    $("tr").on('click', 'li ', function (e) {
         displayTest($(this).val());
         e.stopPropagation();
     });
@@ -152,7 +154,7 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
     }
 
     function filterList(id) {
-        $('tr:gt(1)').each(function() {
+        $('tr:gt(1)').each(function () {
             if (!($(this).find('td:eq(0)').text().startsWith(id))) {
                 $(this).addClass('hidden');
             } else {
@@ -179,7 +181,7 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
     function getTestInfo(index) {
         let td = $(`tr:eq(1)>td:eq(${index})`);
         let test = $(td).find('a').attr('title');
-        test = test.substring(0,test.lastIndexOf('.'));
+        test = test.substring(0, test.lastIndexOf('.'));
         return {
             rowindex: index,
             fullname: test,
@@ -191,27 +193,27 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
 
     function sortList() {
         var sortedRows = rows.slice();
-        sortedRows.sort(function(a, b) {
+        sortedRows.sort(function (a, b) {
             var passA = $(a).find('td:eq(2)').text();
             var passB = $(b).find('td:eq(2)').text();
             return parseInt(passB) - parseInt(passA);
         });
         $('table>tr').remove();
-        sortedRows.each(function() {
+        sortedRows.each(function () {
             $('table').append($(this));
         });
     }
-    $('.close').click(function() {
+    $('.close').click(function () {
         $("#myModal").fadeOut(fadetime);
     });
 
     function resetList() {
         $('table>tr').remove();
-        rows.each(function() {
+        rows.each(function () {
             $('table').append($(this));
         });
     }
-    $('td:eq(2)').click(function() {
+    $('td:eq(2)').click(function () {
         if ($(this).text().includes(' ▶ ')) {
             $(this).find('span').text(' ▼ ');
             sortList();
@@ -225,11 +227,11 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
 
     function countFails() {
         var fails = [];
-        $('tr:eq(0)>td:gt(2)').each(function() {
+        $('tr:eq(0)>td:gt(2)').each(function () {
             var test = $(this).text();
             var index = $(this).index();
             let totalFail = 0;
-            $('tr:gt(0)').each(function() {
+            $('tr:gt(0)').each(function () {
                 var ti = $(this).find(`td`).eq(index);
                 if (ti.text() == 'X') {
                     totalFail++;
@@ -248,7 +250,7 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
         let greenAvg = 0;
         let blueAvg = 0;
         let numMoods = 0;
-        $('tr:gt(0)').each(function() {
+        $('tr:gt(0)').each(function () {
             var mood = $(this).find('td:eq(1)').css('color');
             switch (mood) {
                 case "rgb(255, 0, 0)":
@@ -305,7 +307,7 @@ if (window.location.href.includes('cs439') || window.location.href.includes('cs4
                 }],
                 pointPlacement: 'on'
             }]
-        }, function(chart) {
+        }, function (chart) {
             var legend = chart.legend;
             legend.group.hide();
             legend.box.hide();

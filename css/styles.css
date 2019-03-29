@@ -41,11 +41,11 @@ tr:hover {
     background-color: #FF9800;
 }
 
-.testinfo{
+.testinfo {
     margin: 0px 0px 5px 0px;
 }
 
-#testnumber{
+#testnumber {
     font-weight: bold;
 }
 
@@ -54,6 +54,25 @@ tr:hover {
     margin: 0px;
     padding: 0px;
 }
+
+.testframe {
+    height: 85%;
+    /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); */
+}
+
+/* .votebut {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    margin: 5px 10px 5px 0px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    font-size: medium;
+    font-style: bold;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    background: red;
+} */
 
 .close {
     color: #aaaaaa;
@@ -71,7 +90,8 @@ tr:hover {
     padding: 0px 20px 20px 20px;
     border: 1px solid #888;
     width: 60%;
-    height: 50%;
+    height: 70%;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 td {
